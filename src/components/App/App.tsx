@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import Counter from "../Counter/Counter";
 import { Gentleman } from "../../types";
-import gentlemenApi from "../../data/gentlemen";
 import GentlemenList from "../GentlemenList/GentlemenList";
+import GentlemanForm from "../GentlemanForm/GentlemanForm";
+
+const apiUrl = "http://localhost:3001/gentlemen";
 
 const App = (): React.ReactElement => {
   const [gentlemen, setGentlemen] = useState<Gentleman[]>([]);
@@ -26,7 +28,12 @@ const App = (): React.ReactElement => {
   ).length;
 
   useEffect(() => {
-    loadGentlemen(gentlemenApi);
+    (async () => {
+      const response = await fetch(apiUrl);
+      const gentlemen = (await response.json()) as Gentleman[];
+
+      loadGentlemen(gentlemen);
+    })();
   }, []);
 
   return (
@@ -44,6 +51,7 @@ const App = (): React.ReactElement => {
         />
       </section>
       <main className="main">
+        <GentlemanForm />
         <GentlemenList gentlemen={gentlemen} />
       </main>
     </div>

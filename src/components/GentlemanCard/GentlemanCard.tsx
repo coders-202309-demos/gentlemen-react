@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Gentleman } from "../../types";
 
 interface GentlemanCardProps {
@@ -7,6 +8,14 @@ interface GentlemanCardProps {
 const GentlemanCard = ({
   gentleman: { picture, name, profession, status, twitter, isSelected },
 }: GentlemanCardProps): React.ReactElement => {
+  const initial = useMemo(() => {
+    const nameParts = name.split(" ");
+
+    return nameParts[0].length > 3
+      ? nameParts[0][0].toUpperCase()
+      : nameParts[1][0].toUpperCase();
+  }, [name]);
+
   return (
     <article className={`gentleman${isSelected ? " gentleman--selected" : ""}`}>
       <div className="gentleman__avatar-container">
@@ -15,7 +24,7 @@ const GentlemanCard = ({
           src={`img/${picture}`}
           alt={`${name} apuntándote con el dedo`}
         />
-        <span className="gentleman__initial">{name[0].toUpperCase()}</span>
+        <span className="gentleman__initial">{initial}</span>
       </div>
       <div className="gentleman__data-container">
         <h2 className="gentleman__name">{name}</h2>
