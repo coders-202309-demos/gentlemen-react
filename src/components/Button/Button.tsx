@@ -1,24 +1,20 @@
+import ButtonStyled from "./ButtonStyled";
+
 interface ButtonProps {
   type: "button" | "submit";
-  modifier: string;
   text: string;
-  actionOnClick: () => void;
+  actionOnClick?: () => void;
 }
 
 const Button = ({
   type,
-  modifier,
   text,
   actionOnClick,
 }: ButtonProps): React.ReactElement => {
   return (
-    <button
-      type={type}
-      className={`button button--${modifier}`}
-      onClick={actionOnClick}
-    >
+    <ButtonStyled type={type} onClick={actionOnClick}>
       {text}
-    </button>
+    </ButtonStyled>
   );
 };
 

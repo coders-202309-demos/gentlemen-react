@@ -1,12 +1,19 @@
 import { useMemo } from "react";
 import { Gentleman } from "../../types";
+import Button from "../Button/Button";
+import GentlemanCardStyled from "./GentlemanCardStyled";
 
 interface GentlemanCardProps {
   gentleman: Gentleman;
+  toggleGentleman: (gentleman: Gentleman) => void;
+  removeGentleman: (gentlemanId: number) => void;
 }
 
 const GentlemanCard = ({
-  gentleman: { picture, name, profession, status, twitter, isSelected },
+  gentleman: { id, picture, name, profession, status, twitter, isSelected },
+  gentleman,
+  toggleGentleman,
+  removeGentleman,
 }: GentlemanCardProps): React.ReactElement => {
   const initial = useMemo(() => {
     const nameParts = name.split(" ");
@@ -17,7 +24,9 @@ const GentlemanCard = ({
   }, [name]);
 
   return (
-    <article className={`gentleman${isSelected ? " gentleman--selected" : ""}`}>
+    <GentlemanCardStyled
+      className={`gentleman${isSelected ? " gentleman--selected" : ""}`}
+    >
       <div className="gentleman__avatar-container">
         <img
           className="gentleman__avatar"
@@ -41,7 +50,19 @@ const GentlemanCard = ({
           </li>
         </ul>
       </div>
-    </article>
+      <div className="gentleman__actions">
+        <Button
+          text={isSelected ? "deselect" : "select"}
+          type="button"
+          actionOnClick={() => toggleGentleman(gentleman)}
+        />
+        <Button
+          text="remove"
+          type="button"
+          actionOnClick={() => removeGentleman(id)}
+        />
+      </div>
+    </GentlemanCardStyled>
   );
 };
 
